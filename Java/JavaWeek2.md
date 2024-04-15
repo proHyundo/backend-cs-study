@@ -194,7 +194,7 @@
 - 컴파일러가 for-loop 구문을 아래와 같이 변환한다.
 - Collection 인터페이스는 Iterable 인터페이스를 구현하기 때문.
 - Iterable 인터페이스를 구현한 클래스는 for-loop 구문을 사용할 수 있다.
-- Iterable 인터페이스에는 Iterator<T> iterator(); 메소드가 정의되어 있는데, Iterator 를 반환하고, Iterator 에는 hasNext()와 next() 메소드가 정의되어 있다.
+- Iterable 인터페이스에는 Iterator<T> iterator(); 메서드가 정의되어 있는데, Iterator 를 반환하고, Iterator 에는 hasNext()와 next() 메서드가 정의되어 있다.
 
 </details>
 
@@ -213,7 +213,7 @@
 
 #### 꼬리질문3) Collection 객체를 복사할 때, deep copy 를 수행하기 위한 방법에 대해 설명해주세요. 
 
-- addAll() 메소드
+- addAll() 메서드
 
 
 ---
@@ -232,7 +232,7 @@
 
 **Map**
 - key-value 형식으로 값을 저장.
-- 메소드 : get(), put()
+- 메서드 : get(), put()
 
 </details>
 
@@ -259,7 +259,7 @@
 <details>
     <summary>답변</summary>
 
-Proccess : 실행 중인 프로그램
+Proccess : 실행 중인 프로그램 CPU의 실행 단위
 Thread : 프로세스 내부에서 실행되는 하나의 실행 단위
 - 하나의 프로세스가 시작되면, 최소 하나 이상의 쓰레드가 수행된다.
 - Java는 쓰레드를 생성하지 않아도, JVM 관리를 위한 여러 쓰레드가 수행된다. E.g. GC 쓰레드
@@ -274,19 +274,19 @@ Thread : 프로세스 내부에서 실행되는 하나의 실행 단위
     <summary>답변</summary>
 
 - Runnable 인터페이스를 구현하는 방법
-    - run() 메소드를 구현하는 클래스가 다른 클래스를 상속해야 할 때. 그렇지 않은 경우 Thread 클래스를 상속하는 것이 더 편리.
+    - run() 메서드를 구현하는 클래스가 다른 클래스를 상속해야 할 때. 그렇지 않은 경우 Thread 클래스를 상속하는 것이 더 편리.
 - Thread 클래스를 상속하는 방법
 
 
 </details>
 
-#### 꼬리질문) run() 메소드와 start() 메소드의 역할은 무엇인가요?
+#### 꼬리질문) run() 메서드와 start() 메서드의 역할은 무엇인가요?
 
 <details>
     <summary>답변</summary>
 
 - run() : 쓰레드가 수행하는 코드를 작성
-- start() : 쓰레드를 시작하는 메소드
+- start() : 쓰레드를 시작하는 메서드
 
 </details>
 
@@ -310,11 +310,12 @@ Thread : 프로세스 내부에서 실행되는 하나의 실행 단위
 - 여러 쓰레드가 동일한 객체의 인스턴스 변수를 사용/수정할 경우 의도한 것과 다른 값이 될 수 있다.
 - 이러한 문제를 해결하기 위해 `synchronized` 를 사용해 한 번에 하나의 쓰레드가 접근하도록 한다.
 
-1. 메소드에 `synchronized` 키워드
+1. 메서드에 `synchronized` 키워드
 2. `synchronized` 블록
     - 파라미터에 객체를 주입하여, 잠금처리에 사용한다.
     - 특정 쓰레드가 A 객체로 잠금된 `synchronized` 블록을 사용중이라면, 동일한 A 객체로 잠금된 다른 `synchronized` 블록에 접근하지 못한다.
     - 참고 링크 : https://stackoverflow.com/questions/29876641/what-is-the-purpose-of-passing-parameter-to-synchronized-block
+    
 </details>
 
 ---
@@ -331,7 +332,7 @@ Thread : 프로세스 내부에서 실행되는 하나의 실행 단위
 
 </details>
 
-#### 꼬리질문1) Optional 에는 orElse() 메소드와 orElseGet() 메소드가 있습니다. 두 메소드의 차이는 무엇일까요?
+#### 꼬리질문1) Optional 에는 orElse() 메서드와 orElseGet() 메서드가 있습니다. 두 메서드의 차이는 무엇일까요?
 
 <details>
     <summary>답변</summary>
@@ -352,7 +353,7 @@ Thread : 프로세스 내부에서 실행되는 하나의 실행 단위
     <summary>답변</summary>
 
 - 익명클래스의 가독성을 보완하기 위해 등장.
-- 인터페이스에 메소드가 오직 하나만 존재하는 함수형 인터페이스를 
+- 인터페이스에 메서드가 오직 하나만 존재하는 함수형 인터페이스를 
 
 </details>
 
@@ -407,8 +408,7 @@ Thread : 프로세스 내부에서 실행되는 하나의 실행 단위
 
 #### 꼬리질문) FileInputStream 클래스를 사용해 파일의 데이터를 읽는 방법을 설명해주세요. 
 
-- 생성자에 파일 이름을 명시하고, read() 메소드를 통해 byte 단위로 파일을 읽어야 하기에 비효율적이다. 대부분의 파일은 텍스트기반이기 때문에 Reader 클래스를 확장한 클래스 중 `BufferedReader`, `InputStreamReader`를 대게 사용한다.
-- `자바의 신 vol 2 - 3rd`204 쪽 설명과 달리 protected 생성자가 아닌 public 이다.
+- 생성자에 파일 이름을 명시하고, read() 메서드를 통해 byte 단위로 파일을 읽어야 하기에 비효율적이다. 대부분의 파일은 텍스트기반이기 때문에 Reader 클래스를 확장한 클래스 중 `BufferedReader`, `InputStreamReader`를 대게 사용한다.
 - 반드시 예외처리를 해주어야 하며, 자원을 close() 해주어야 한다.
 
 #### 꼬리질문) FileWriter와 BufferedWriter 차이
