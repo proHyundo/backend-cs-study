@@ -59,10 +59,13 @@
 
 <details>
     <summary>답변</summary>
+</br>
 
-- 두 방식 모두 메서드를 호출할 때, 파라미터를 통해 값을 전달하는 방식이다.
+두 방식 모두 메서드를 호출할 때, 파라미터를 통해 값을 전달하는 방식.
+
 - pass by value : 복사된 값만 전달되는 방식으로, 기본 자료형은 항상 이에 해당된다.
-- pass by reference : 객체에 대한 참조가 전달되는 방식으로, 
+- pass by reference : 객체에 대한 참조가 전달되는 방식
+
 - 그러나, Java는 모든 메서드 호출에 있어 pass by value 방식을 사용하고 있습니다.
 
 - 참고 링크 : [Pass By Value, Pass by Reference
@@ -93,14 +96,6 @@
 
 </details>
 
-#### 꼬리질문3) Pool, immutable, 왜 String은 immutable하게 설계?
-
-<details>
-    <summary>답변</summary>
-
-- 내용
-
-</details>
 
 ---
 </br>
@@ -145,12 +140,67 @@
 <details>
     <summary>답변</summary>
 
-- 동일한 객체간의 (멤버변수 등) 비교가 필요한 경우 오버라이딩이 필요.
+- 동일한 객체간의 (멤버변수 등) 상태 비교가 필요한 경우 오버라이딩이 필요.
 - 비교를 제외한 기능위주의 클래스인 경우 오버라이딩 불필요.
-- 만약, 
+    - 메서드만 있는 클래스인 경우 유틸 클래스이다. static 하게 필요한 상태를 관리하는 것이 좋다.
 
 </details>
 
+#### 꼬리질문) equals 메서드를 재정의 할 때 주의할 점을 알고 있나요?
+
+<details>
+    <summary>답변</summary>
+
+- 자신과 비교할 땐 true (반사성), hasCode도 같이 재정의 해야한다.
+- 그렇지 않은 경우 hash를 활용하는 자료구조에서 문제가 발생한다. 왜?
+```java
+@Getter
+@Setter
+public class SampleDto {
+
+    public String name;
+
+    @Override
+    public boolean equals(Object o) {
+        SampleDto sampleDto = (SampleDto) o;
+        return Objects.equals(getName(), sampleDto.getName());
+    }
+
+    @Override
+    public int hashCode() {
+        return 1;
+    }
+
+}
+```
+```java
+public class HashmapSample {
+    public static void main(String[] args) {
+
+        SampleDto aaa = new SampleDto();
+        aaa.setName("c");
+
+        SampleDto bbb = new SampleDto();
+        bbb.setName("c");
+
+
+        HashMap<SampleDto, String> map = new HashMap<>();
+        map.put(aaa, "aaa");
+        map.put(bbb, "bbb");
+
+        for (int i = 0; i < 100; i++) {
+            String result = map.get(aaa);
+            System.out.println("result = " + result);
+        }
+    }
+}
+```
+→ 서로 다른 객체 임에도 hashCode가 같으면서 equlas() 메소드에서 실제 메모리 주소를 비교하지 않으면, Map에서 의도한 value 를 올바르게 찾지 못한다.
++) 나중에 put한 객체를 버킷에 찾아서 반환하는가?
+
+결론 : equals () 오버라이딩을 잘 해놓자~
+
+</details>
 
 #### 꼬리질문4) "hashCode" 를 잘못 오버라이딩하면 "HashMap" 등 hash 콜렉션의 성능이 떨어질 수가 있습니다. 어떤 케이스일 때 그럴 수 있을까요?
 
@@ -180,14 +230,49 @@
     <summary>답변</summary>
 
 - String 클래스는 불변객체 Immutable하다.
-- 따라서 하나의 객체에 변경 작업이 계속되면, 변경(재할당)마다 새로운 객체를 Heap 영역의 String Pool 이라는 공간에 저장한다. 저장되는 영역은 한계가 있다.
+- 따라서 하나의 객체에 변경 작업이 계속되면, 변경(재할당)마다 새로운 객체를 Heap 영역의 String Pool 이라는 공간에 저장한다.        
+    - 저장되는 영역은 한계가 있다.
+    - JDK 1.5 부터 컴파일 과정에서 `+` 연산의 경우 StringBuilder으로 자동변환되어 성능최적화
 
 </details>
 
-#### 꼬리질문1) JDK 1.5
+#### 꼬리질문) 불변이란 무엇이고 왜 String을 불변성을 띄게 설계되었을까?
 
 <details>
     <summary>답변</summary>
+</br>
+
+1) 보안
+
+- 참고 링크 : [Oracle Java Magazine, Why is Java making so many things immutable?](https://blogs.oracle.com/javamagazine/post/java-immutable-objects-strings-date-time-records)
+
+</details>
+
+#### 꼬리질문1) 불변한 String의 단점을 보완하는 방법이 있나요?
+
+<details>
+    <summary>답변</summary>
+
+StringBuffer
+StringBuilder
+
+참고 자료
+- [Java Compiler Optimization for String Concatenation](https://medium.com/javarevisited/java-compiler-optimization-for-string-concatenation-7f5237e5e6ed)
+- [jdk1.5에서 String 더하기의 컴파일시의 최적화](https://gist.github.com/benelog/b81b4434fb8f2220cd0e900be1634753)
+- [String은 항상 StringBuilder로 변환될까?](https://siyoon210.tistory.com/160)
+
+</details>
+
+#### 꼬리질문) String 변수에 값을 할당할 때, `new` 연산자와 쌍따옴표`""`의 차이점은?
+
+<details>
+    <summary>답변</summary>
+
+`new`
+- 매번 heap 영역에 재생성
+
+`""`
+- 힙 영역 상수풀에서 재사용하여 불필요한 재생성 비용 X
 
 </details>
 
@@ -196,6 +281,7 @@
 <details>
     <summary>답변</summary>
 
+- equals()를 재정의해 주소 값이 아닌, 값을 비교하도록 구현되었기 때문
 - Constant Pool
 - 참고 링크 : [Java String Pool](https://junhyunny.github.io/java/java-string-pool/)
 
