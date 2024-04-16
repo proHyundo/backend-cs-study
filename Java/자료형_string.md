@@ -6,7 +6,7 @@
 - 정수형 : byte, short, int, long (aka. bsil)
 - 실수형 : float, double (aka. fd)
 - 그 외 : boolean
-![Alt text](./assets/image.png)
+![image](https://github.com/proHyundo/backend-cs-study/assets/128882585/197cc15e-fe2b-4635-9240-5aa7be08b624)
 
 </details>
 
@@ -72,7 +72,7 @@
 -항해일지:티스토리](https://internet-craft.tistory.com/2)
 - 참고 링크 : [call by value vs call by reference - 유도진 | 백엔드 데브코스 2기 | 백둥이Deview 220329
 ](https://youtu.be/34RAc5gdl54?si=J_yTUzFxmtjXrbXG)
-![](./assets/백엔드_데브코스_2기_유도진.png)
+![백엔드_데브코스_2기_유도진](https://github.com/proHyundo/backend-cs-study/assets/128882585/7f350f0a-de0e-4ddc-8947-0f2eece42177)
 
 </details>
 
