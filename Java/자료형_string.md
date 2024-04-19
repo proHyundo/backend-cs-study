@@ -28,7 +28,7 @@
 <details>
     <summary>답변</summary>
 
-- char
+- char자료형. '\u0000'(공백) ~ '\uffff'(물음표) 데이터 범위를 가지며, 16진법을 10진수로 변경하면 0 ~ 65535이다. (2byte == 16bit)
 - 참고 링크 : [is-java-char-signed-or-unsigned-for-arithmetic](https://stackoverflow.com/questions/54924058/is-java-char-signed-or-unsigned-for-arithmetic)
 
 </details>
@@ -38,8 +38,14 @@
 <details>
     <summary>답변</summary>
 
-- BigDecimal
+부적절한 이유
+- 자바는 IEEE 754 부동 소수점 방식을 사용해서, 정확한 실수를 저장하지 않고 최대한 완벽에 가깝기를 바라는 근사치 값을 저장한다.
+- 따라서 정확한 돈과 소수점을 다루기에는 부적절하다.
+
+대안
+- 정수를 이용해 실수를 표현하는 java.math.BigDecimal 클래스
 - 참고 링크 : [@new_wisdom/Java-BigDecimal](https://velog.io/@new_wisdom/Java-BigDecimal과-함께하는-아마찌의-너드짓)
+- 참고 링크 : [BigDecimal A to Z: 정확한 계산을 위한 숫자 처리 클래스](https://dev.gmarket.com/75)
 
 </details>
 
@@ -48,7 +54,31 @@
 <details>
     <summary>답변</summary>
 
-- contents
+- new 연산자 : 새로운 메모리 주소 할당
+- Java의 Wrapper 클래스에는 valueOf() 메서드가 정의되어 있음. : -128 ~ 127 사이의 정수인 경우 캐싱된 데이터를 가져옴
+
+```java
+Integer integer = new Integer(10);
+System.out.println("Integer: " + integer);
+
+Integer integer2 = Integer.valueOf(10);
+System.out.println("Integer2: " + integer2);
+
+// == operator compare the references of two objects in memory.
+if (integer == integer2) {
+    System.out.println("integer == integer2");
+} else {
+    System.out.println("integer != integer2");
+}
+
+// Integer class overrides the equals method of Object class to compare the actual values of two objects.
+if (integer.equals(integer2)) {
+    System.out.println("integer.equals(integer2)");
+} else {
+    System.out.println("!integer.equals(integer2)");
+}
+```
+- 참고 링크 : https://meetup.nhncloud.com/posts/185
 
 </details>
 
@@ -64,15 +94,13 @@
 두 방식 모두 메서드를 호출할 때, 파라미터를 통해 값을 전달하는 방식.
 
 - pass by value : 복사된 값만 전달되는 방식으로, 기본 자료형은 항상 이에 해당된다.
-- pass by reference : 객체에 대한 참조가 전달되는 방식
+- pass by reference : 값이 아닌 객체에 대한 참조가 전달되는 방식
+    - 호출된 메서드에서 다른 객체로 대체하여 처리하면 기존 값은 바뀌지 않는다.
+    - 그러나, 매개변수로 받은 참조 자료형 안에 있는 변수를 변경하면, 데이터가 바뀐다.
+    - String의 경우 `""` 쌍따옴표로 값을 할당하면 `new` 연산자로 객체를 생성한 것과 같다.
 
-- 그러나, Java는 모든 메서드 호출에 있어 pass by value 방식을 사용하고 있습니다.
-
-- 참고 링크 : [Pass By Value, Pass by Reference
--항해일지:티스토리](https://internet-craft.tistory.com/2)
-- 참고 링크 : [call by value vs call by reference - 유도진 | 백엔드 데브코스 2기 | 백둥이Deview 220329
-](https://youtu.be/34RAc5gdl54?si=J_yTUzFxmtjXrbXG)
-![백엔드_데브코스_2기_유도진](https://github.com/proHyundo/backend-cs-study/assets/128882585/7f350f0a-de0e-4ddc-8947-0f2eece42177)
+- 그러나, 실질적으로 Java는 모든 메서드 호출에 있어 pass by value 방식을 사용하고 있다.
+    
 
 </details>
 
@@ -81,9 +109,19 @@
 <details>
     <summary>답변</summary>
 
-- 기본 자료형이 아닌 자료형의 경우, 주소 값을 복사하기 때문.
-- 참고 링크 : [JAVA) 자바에서는 Call By Reference가 불가능 합니다.](https://shanepark.tistory.com/380)
+- 참조 자료형의 경우, 매개변수를 넘기는 과정에서 직접적인 참조를 넘긴 게 아닌, 주소 값을 복사해서 넘기기 때문에
+
+
+|![image](https://github.com/proHyundo/backend-cs-study/assets/128882585/dabbfe69-9071-49de-9aba-5e8145702bb6) | ![image](https://github.com/proHyundo/backend-cs-study/assets/128882585/b3bab7e5-a468-41f5-a846-3b62ba88675f) |
+| --- | --- |
+- run 메서드가 실행되며 매개변수를 전달받으면 다음과 같은 상황이 됩니다. arg1은 a1이 가지고 있는 주소값을 복사하여 독자적으로 가지게 됩니다. arg2도 마찬가지로 a2가 가지고 있는 주소 값을 복사하여 독자적으로 가지고 있게 됩니다. 주소 값을 복사하여 가져 가는 call by value가 발생한 것이죠.
+- run 메서드가 실행되며 매개변수를 전달받으면 다음과 같은 상황이 됩니다. arg1은 a1이 가지고 있는 주소값을 복사하여 독자적으로 가지게 됩니다. arg2도 마찬가지로 a2가 가지고 있는 주소 값을 복사하여 독자적으로 가지고 있게 됩니다. 주소 값을 복사하여 가져 가는 call by value가 발생한 것이죠.
 - 참고 링크 : [Java는 Call by reference가 없다](https://deveric.tistory.com/92)
+
+- 참고 링크 : [Pass By Value, Pass by Reference-항해일지:티스토리](https://internet-craft.tistory.com/2)
+- 참고 링크 : [call by value vs call by reference - 유도진 | 백엔드 데브코스 2기 | 백둥이Deview 220329](https://youtu.be/34RAc5gdl54?si=J_yTUzFxmtjXrbXG) ![백엔드_데브코스_2기_유도진](https://github.com/proHyundo/backend-cs-study/assets/128882585/7f350f0a-de0e-4ddc-8947-0f2eece42177)
+- 참고 링크 : [JAVA) 자바에서는 Call By Reference가 불가능 합니다.](https://shanepark.tistory.com/380)
+
 
 </details>
 
@@ -94,6 +132,57 @@
 
 - String pool을 통해 immutable로 관리되기 때문
 
+```java
+public class StringPoolSampleCode {
+    
+    public static void main(String[] args) {
+        String a = "Hello";
+        String b = new String("Hello");
+
+        if (a == b) {
+            System.out.println("a and b are the same object");
+        } else {
+            System.out.println("a and b are different objects");
+        }
+
+        if (a.equals(b)) {
+            System.out.println("a and b have the same value");
+        } else {
+            System.out.println("a and b have different values");
+        }
+
+        String c = "Hello";
+        String d = "Hello";
+
+        if (c == d) {
+            System.out.println("c and d are the same object");
+        } else {
+            System.out.println("c and d are different objects");
+        }
+
+        if (c.equals(d)) {
+            System.out.println("c and d have the same value");
+        } else {
+            System.out.println("c and d have different values");
+        }
+
+        String e = new String("Hello");
+        String f = new String("Hello");
+
+        if (e == f) {
+            System.out.println("e and f are the same object");
+        } else {
+            System.out.println("e and f are different objects");
+        }
+
+        if (e.equals(f)) {
+            System.out.println("e and f have the same value");
+        } else {
+            System.out.println("e and f have different values");
+        }
+    }
+}
+```
 </details>
 
 
@@ -106,7 +195,7 @@
     <summary>답변</summary>
 
 - 모든 클래스의 최상위 클래스 이다.
-- 묵시적으로 Object 클래스를 상속받고 있다.
+- Object 클래스를 제외한 모든 클래스들은 묵시적으로 Object 클래스를 상속받고 있다.
 - Object 클래스 상속을 통해 모든 클래스의 기본적인 행동을 정의할 수 있다.
 
 </details>
@@ -121,6 +210,7 @@
     - `public boolean equals(Object obj)`
     - hasCode()
 - 쓰레드 관련 메서드 : 
+    - `notify()`, `notifyAll()`, `wait()`
 
 </details>
 
@@ -131,11 +221,23 @@
 
 - 등위 연산자 : 기본자료형을 비교할 땐 값을, 참조자료형을 비교할 땐 주소값을 비교하게 된다. &rarr; 그럼 결국 stack에 저장된 값을 비교한다는거 아닌가?
 - equlas() : hasCode() 메서드를 호출하여 값을 비교한다.
-- hasCode() : 객체의 주소값을 반환한다.
+- hasCode() : 객체의 주소 값을 이용해서 해싱(hashing) 기법을 통해 해시 코드를 만든 후 반환. 엄밀히 말하면 해시코드는 메모리상 주소값은 아니고, 주소값으로 만든 고유한 숫자값.
 
 </details>
 
-#### 꼬리질문3) equals() 메서드 오버라이딩이 필요한 경우와 불필요한 경우를 알고 있으신가요?
+#### 꼬리질문3) 그럼 우리가 "hashCode"를 오버라이드 했을때에도 메모리 주소를 리턴하게 할 수 있을까요? 자바에서는 개발자가 직접 메모리에 접근할 수 있나요?
+
+<details>
+    <summary>답변</summary>
+
+- hashCode() 메서드를 오버라이딩한 이후에도 객체의 메모리 주소값(해시코드)를 가져오기 위해서는 `System.identityHashCode()` 메서드를 사용하여 가져올 수 있다.
+- Java는 개발자가 직접 메모리에 접근할 수 없다.
+    - 그럼 다음 링크들에서 다루는 내용은 메모리 접근이 아닌건가 🤔 : https://homoefficio.github.io/2020/08/10/Java-NIO-FileChannel-%EA%B3%BC-DirectByteBuffer/
+    - https://forl.tistory.com/137
+
+</details>
+
+#### 꼬리질문4) equals() 메서드 오버라이딩이 필요한 경우와 불필요한 경우를 알고 있으신가요?
 
 <details>
     <summary>답변</summary>
@@ -143,75 +245,71 @@
 - 동일한 객체간의 (멤버변수 등) 상태 비교가 필요한 경우 오버라이딩이 필요.
 - 비교를 제외한 기능위주의 클래스인 경우 오버라이딩 불필요.
     - 메서드만 있는 클래스인 경우 유틸 클래스이다. static 하게 필요한 상태를 관리하는 것이 좋다.
+- 참고링크 : [자바 equals / hashCode 오버라이딩 - 완벽 이해하기
+출처: https://inpa.tistory.com/entry/JAVA-☕-equals-hashCode-메서드-개념-활용-파헤치기 [Inpa Dev 👨‍💻:티스토리]](https://inpa.tistory.com/entry/JAVA-%E2%98%95-equals-hashCode-%EB%A9%94%EC%84%9C%EB%93%9C-%EA%B0%9C%EB%85%90-%ED%99%9C%EC%9A%A9-%ED%8C%8C%ED%97%A4%EC%B9%98%EA%B8%B0)
 
 </details>
 
-#### 꼬리질문) equals 메서드를 재정의 할 때 주의할 점을 알고 있나요?
+#### 꼬리질문5) equals 메서드를 재정의 할 때 주의할 점을 알고 있나요?
 
 <details>
     <summary>답변</summary>
 
 - 자신과 비교할 땐 true (반사성), hasCode도 같이 재정의 해야한다.
-- 그렇지 않은 경우 hash를 활용하는 자료구조에서 문제가 발생한다. 왜?
-```java
-@Getter
-@Setter
-public class SampleDto {
+- 그렇지 않은 경우 hash를 활용하는 자료구조에서 문제가 발생한다.  hash 값을 사용하는 Collection(HashMap, HashSet, HashTable)은 객체가 논리적으로 같은지 비교할 때 아래 그림과 같은 과정을 거치기 때문.
 
+<p align="center">
+  <img src="https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FsMxPO%2FbtrNAyvpegC%2FUPc1EBboouzu0WZnc9bUfk%2Fimg.png" alt="equals-hash-img" width="400" />
+</p>
+
+```java
+import java.util.HashMap;
+import java.util.Objects;
+
+public class HashCodeSample {
+
+    public static void main(String[] args) {
+        SampleDto s1 = new SampleDto("song");
+        SampleDto s2 = new SampleDto("song");
+
+        HashMap<SampleDto, String> map = new HashMap<>();
+        map.put(s1, "fisrt song");
+        map.put(s2, "second song");
+
+        System.out.println(map.size());
+        // OUTPUT : 1
+    }
+}
+
+class SampleDto {
     public String name;
 
-    @Override
-    public boolean equals(Object o) {
-        SampleDto sampleDto = (SampleDto) o;
-        return Objects.equals(getName(), sampleDto.getName());
+    public SampleDto(String name) {
+        this.name = name;
     }
 
     @Override
     public int hashCode() {
-        return 1;
+        return Objects.hash(name);
     }
 
-}
-```
-```java
-public class HashmapSample {
-    public static void main(String[] args) {
-
-        SampleDto aaa = new SampleDto();
-        aaa.setName("c");
-
-        SampleDto bbb = new SampleDto();
-        bbb.setName("c");
-
-
-        HashMap<SampleDto, String> map = new HashMap<>();
-        map.put(aaa, "aaa");
-        map.put(bbb, "bbb");
-
-        for (int i = 0; i < 100; i++) {
-            String result = map.get(aaa);
-            System.out.println("result = " + result);
+    @Override
+    public boolean equals(Object obj) {
+        if (obj instanceof SampleDto) {
+            SampleDto s = (SampleDto) obj;
+            return name.equals(s.name);
+        } else {
+            return false;
         }
     }
+    
 }
 ```
 → 서로 다른 객체 임에도 hashCode가 같으면서 equlas() 메소드에서 실제 메모리 주소를 비교하지 않으면, Map에서 의도한 value 를 올바르게 찾지 못한다.
-+) 나중에 put한 객체를 버킷에 찾아서 반환하는가?
-
-결론 : equals () 오버라이딩을 잘 해놓자~
 
 </details>
 
-#### 꼬리질문4) "hashCode" 를 잘못 오버라이딩하면 "HashMap" 등 hash 콜렉션의 성능이 떨어질 수가 있습니다. 어떤 케이스일 때 그럴 수 있을까요?
-
-<details>
-    <summary>답변</summary>
-
-- 내용
-
-</details>
-
-#### 꼬리질문5) "HashMap"은 내부적으로 어떻게 구현되어있길래 그렇게 빨리 값을 탐색할 수 있을까요?
+#### 꼬리질문6) "hashCode" 를 잘못 오버라이딩하면 "HashMap" 등 hash 콜렉션의 성능이 떨어질 수가 있습니다. 어떤 케이스일 때 그럴 수 있을까요?
 
 <details>
     <summary>답변</summary>
@@ -222,7 +320,6 @@ public class HashmapSample {
 
 ---
 </br>
-
 
 ### 질문) String 클래스의 단점이 있다면 무엇일까요?
 
@@ -253,8 +350,15 @@ public class HashmapSample {
 <details>
     <summary>답변</summary>
 
+불변한 String과 달리 StringBuffer와 StringBuilder는 가변적이다.
+
 StringBuffer
+- 멀티쓰레드에 안전(thread safe)하도록 동기화 되어 있다
+
 StringBuilder
+- StringBuffer에서 쓰레드 동기화만 뺀 StringBuilder가 새로 추가
+
+추가 키워드 : 동기화
 
 참고 자료
 - [Java Compiler Optimization for String Concatenation](https://medium.com/javarevisited/java-compiler-optimization-for-string-concatenation-7f5237e5e6ed)
@@ -262,6 +366,12 @@ StringBuilder
 - [String은 항상 StringBuilder로 변환될까?](https://siyoon210.tistory.com/160)
 
 </details>
+
+#### 꼬리질문) 왜 동기화(synchronized)가 걸려있으면 느린걸까요?
+
+
+싱글 스레드로 접근한다는 가정하에선 "StringBuilder" 와 "StringBuffer" 의 성능이 똑같을까요?
+함정 질문입니다. synchronized 키워드를 달면 내부적으로 어떤 일이 벌어지는지 동작원리에 대해 잘 알아보세요!
 
 #### 꼬리질문) String 변수에 값을 할당할 때, `new` 연산자와 쌍따옴표`""`의 차이점은?
 

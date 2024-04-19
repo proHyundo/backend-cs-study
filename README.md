@@ -23,16 +23,16 @@
 **모의 면접 세부 내용**
 - 한 명 씩 순회하며 면접자 역할을 맡습니다.
 - 꼬리질문은 5 Whys 를 목표로 진행합니다.
-- ![f957e083133943f089da339c8b59bf14_home-smartwayx_693-670](https://github.com/proHyundo/backend-cs-study/assets/128882585/14a298d4-bc04-41b4-8460-1ba0e1ee9c25)
+<p align="center">
+  <img src="https://github.com/proHyundo/backend-cs-study/assets/128882585/14a298d4-bc04-41b4-8460-1ba0e1ee9c25" alt="5-whys-img" width="400" />
+</p>
+
 - 면접자가 질문(또는 꼬리질문)에 답변이 어려운 경우 면접관이 해당 질문에 답변할 수 있습니다.
 - 면접자에게 더이상 질문할 내용이 없는 경우, 면접자가 면접관들에게 꼬리질문을 물을 수 있습니다.
 - 모의 면접이 종료된 후 상호 피드백 시간을 갖습니다.
 
-## Study Culture Rules
 
-contents
-
-## Thanks for contribution
+<!-- ## Thanks for contribution
 
 contents
 
@@ -61,5 +61,5 @@ contents
 |profile|a|b|c|d|
 |participation rate|100%|100%|100%|100%|
 
-contents
+contents -->
 
