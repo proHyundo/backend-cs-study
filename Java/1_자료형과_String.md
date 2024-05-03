@@ -1,3 +1,10 @@
+
+<!-- vscode-markdown-toc-config
+	numbering=false
+	autoSave=true
+	/vscode-markdown-toc-config -->
+※ 면접 대비 겸 학습의 목적으로 질문과 답변을 작성했습니다. 따라서 키워드 중심의 간결한 문체를 사용했음을 양해바랍니다. 잘못된 내용 또는 보강이 필요한 부분을 댓글로 말씀해주시면 정말 감사드리겠습니다. 답변의 출처는 대게 전문서적이며, 검색에 기반한 답변은 가급적 출처를 달았습니다.
+
 ### 질문) Java 기본 자료형의 종류는 무엇이 있나요?
 
 <details>
@@ -16,7 +23,7 @@
     <summary>답변</summary>
 
 - 1byte 는 8bit
-- 컴퓨터의 최소 단위 bit는 0, 1 2진수 값을 저장 가능
+- 컴퓨터의 최소 단위 bit는 2진수(0, 1) 값을 저장 가능
 - 그런데, 자바의 정수형 기본 자료형은 모두 signed 타입
 - 가장 첫 번째 비트는 부호를 나타내는 비트.
 - 따라서 1000_0000 ~ 0111_111 &rarr; -128~127
@@ -91,17 +98,46 @@ if (integer.equals(integer2)) {
     <summary>답변</summary>
 </br>
 
-두 방식 모두 메서드를 호출할 때, 파라미터를 통해 값을 전달하는 방식.
+메서드를 호출할 때, 파라미터를 통해 `값`과 `참조` 무엇을 전달하는지에 따라 구분된다.
 
-- pass by value : 복사된 값만 전달되는 방식으로, 기본 자료형은 항상 이에 해당된다.
-- pass by reference : 값이 아닌 객체에 대한 참조가 전달되는 방식
-    - 호출된 메서드에서 다른 객체로 대체하여 처리하면 기존 값은 바뀌지 않는다.
-    - 그러나, 매개변수로 받은 참조 자료형 안에 있는 변수를 변경하면, 데이터가 바뀐다.
-    - String의 경우 `""` 쌍따옴표로 값을 할당하면 `new` 연산자로 객체를 생성한 것과 같다.
+**pass by value**
+- 매개된 실제 값을 복사하여 `복사된 값`만 전달되는 방식
+- 기본 자료형은 항상 이에 해당
 
-- 그러나, 실질적으로 Java는 모든 메서드 호출에 있어 pass by value 방식을 사용하고 있다.
+**pass by reference**
+- 값이 아닌 객체에 대한 참조가 전달되는 방식
+- 호출된 메서드에서 다른 객체로 대체하여 처리하면 기존 값은 바뀌지 않는다.
+- 단, 매개변수로 받은 참조 자료형 안에 있는 변수를 변경하면, 데이터가 바뀐다.
+    - 예제코드
+    ```java
+    public class PassbySample {
+        public static void main(String[] args) {
+            PassbySample passbySample = new PassbySample();
+            ObjectA objectA = new ObjectA("origin name");
+
+            passbySample.passByReference(objectA);
+            System.out.println("objectA = " + objectA);
+
+            passbySample.passByReferenceWithAccessOperator(objectA);
+            System.out.println("objectA = " + objectA);
+        }
+
+        public void passByReference(ObjectA objectA) {
+            objectA = new ObjectA("passByReference");
+        }
+
+        public void passByReferenceWithAccessOperator(ObjectA objectA) {
+            objectA.name = "passByReferenceWithAccessOperator";
+        }
+    }
+    ```
+    ```bash
+    출력결과 >> objectA = ObjectA(name=origin name)
+                objectA = ObjectA(name=passByReferenceWithAccessOperator)
+    ```
+
+이렇게 두 가지 방식으로 구분되지만, 실질적으로 Java는 모든 메서드 호출에 있어 pass by value 방식을 사용하고 있다.
     
-
 </details>
 
 #### 꼬리질문1) Java는 왜 pass by value 만 존재하나요?
@@ -109,18 +145,24 @@ if (integer.equals(integer2)) {
 <details>
     <summary>답변</summary>
 
-- 참조 자료형의 경우, 매개변수를 넘기는 과정에서 직접적인 참조를 넘긴 게 아닌, 주소 값을 복사해서 넘기기 때문에
-
+- 참조 자료형을 매개변수로 전달할 때, 직접적인 참조를 넘긴 게 아닌, 주소 값을 복사해서 넘긴다. 즉, Stack 영역에 새로운 파라미터에 선언한 변수를 생성하고, 주소 값을 복사해 할당한다. 때문에 pass by value 이다.
 
 |![image](https://github.com/proHyundo/backend-cs-study/assets/128882585/dabbfe69-9071-49de-9aba-5e8145702bb6) | ![image](https://github.com/proHyundo/backend-cs-study/assets/128882585/b3bab7e5-a468-41f5-a846-3b62ba88675f) |
 | --- | --- |
 - run 메서드가 실행되며 매개변수를 전달받으면 다음과 같은 상황이 됩니다. arg1은 a1이 가지고 있는 주소값을 복사하여 독자적으로 가지게 됩니다. arg2도 마찬가지로 a2가 가지고 있는 주소 값을 복사하여 독자적으로 가지고 있게 됩니다. 주소 값을 복사하여 가져 가는 call by value가 발생한 것이죠.
-- run 메서드가 실행되며 매개변수를 전달받으면 다음과 같은 상황이 됩니다. arg1은 a1이 가지고 있는 주소값을 복사하여 독자적으로 가지게 됩니다. arg2도 마찬가지로 a2가 가지고 있는 주소 값을 복사하여 독자적으로 가지고 있게 됩니다. 주소 값을 복사하여 가져 가는 call by value가 발생한 것이죠.
-- 참고 링크 : [Java는 Call by reference가 없다](https://deveric.tistory.com/92)
+- arg2에 arg1의 값을 저장한다고 해도 이는 run 메서드 내에 존재하는 arg2가 arg1이 가진 주소값을 복사하여 저장하는 것일 뿐 원본 a2와는 독립된 변수이기 때문에 원본 a2는 변경되지 않습니다.
+- 이미지 출처 및 참고 링크 : [Java는 Call by reference가 없다](https://deveric.tistory.com/92)
 
-- 참고 링크 : [Pass By Value, Pass by Reference-항해일지:티스토리](https://internet-craft.tistory.com/2)
-- 참고 링크 : [call by value vs call by reference - 유도진 | 백엔드 데브코스 2기 | 백둥이Deview 220329](https://youtu.be/34RAc5gdl54?si=J_yTUzFxmtjXrbXG) ![백엔드_데브코스_2기_유도진](https://github.com/proHyundo/backend-cs-study/assets/128882585/7f350f0a-de0e-4ddc-8947-0f2eece42177)
-- 참고 링크 : [JAVA) 자바에서는 Call By Reference가 불가능 합니다.](https://shanepark.tistory.com/380)
+|![image](https://github.com/proHyundo/backend-cs-study/assets/128882585/6a67859b-4f06-4fc7-ae65-9d25d3f22f38)|![image](https://github.com/proHyundo/backend-cs-study/assets/128882585/893c44ab-8117-4947-ba78-3d98969a18fa)|
+|:---:|:---:|
+|원시타입|참조타입|
+
+- 이미지 출처 및 참고 링크 : [Pass By Value, Pass by Reference-항해일지:티스토리](https://internet-craft.tistory.com/2)
+
+
+![백엔드_데브코스_2기_유도진](https://github.com/proHyundo/backend-cs-study/assets/128882585/7f350f0a-de0e-4ddc-8947-0f2eece42177)
+- 이미지 출처 및 참고 링크 : [call by value vs call by reference - 유도진 | 백엔드 데브코스 2기 | 백둥이Deview 220329](https://youtu.be/34RAc5gdl54?si=J_yTUzFxmtjXrbXG) 
+
 
 
 </details>
@@ -130,58 +172,44 @@ if (integer.equals(integer2)) {
 <details>
     <summary>답변</summary>
 
-- String pool을 통해 immutable로 관리되기 때문
-
+- String pool을 통해 immutable(불변객체)로 관리되기 때문
+- String의 경우 `""` 쌍따옴표로 값을 할당하면 `new` 연산자로 객체를 생성한 것과 같다.
 ```java
-public class StringPoolSampleCode {
-    
+String strByDoubleQuotation = "string pool";
+String strByNewOperator = new String("string pool");
+String strByNewOperator2 = new String("string pool");
+System.out.println("strByDoubleQuotation == strByNewOperator: " + (strByDoubleQuotation == strByNewOperator));
+System.out.println("strByNewOperator == strByNewOperator2: " + (strByNewOperator == strByNewOperator2));
+```
+
+|![image](https://github.com/proHyundo/backend-cs-study/assets/128882585/a0940b7e-4e4e-44ed-ad34-f2b4a7e339f2)|
+|---|
+- 예제코드
+```java
+public class StringPassBy {
     public static void main(String[] args) {
-        String a = "Hello";
-        String b = new String("Hello");
+        StringPassBy stringPassBy = new StringPassBy();
+        String str = "origin name";
+        
+        stringPassBy.passByReferenceWithNewOperator(str);
+        System.out.println("passByReferenceWithNewOperator str = " + str);
+        
+        stringPassBy.passByReferenceDoubleQuotation(str);
+        System.out.println(" passByReferenceDoubleQuotation str = " + str);
+    }
 
-        if (a == b) {
-            System.out.println("a and b are the same object");
-        } else {
-            System.out.println("a and b are different objects");
-        }
+    public void passByReferenceWithNewOperator(String str) {
+        str = new String("passByReferenceWithNewOperator");
+    }
 
-        if (a.equals(b)) {
-            System.out.println("a and b have the same value");
-        } else {
-            System.out.println("a and b have different values");
-        }
-
-        String c = "Hello";
-        String d = "Hello";
-
-        if (c == d) {
-            System.out.println("c and d are the same object");
-        } else {
-            System.out.println("c and d are different objects");
-        }
-
-        if (c.equals(d)) {
-            System.out.println("c and d have the same value");
-        } else {
-            System.out.println("c and d have different values");
-        }
-
-        String e = new String("Hello");
-        String f = new String("Hello");
-
-        if (e == f) {
-            System.out.println("e and f are the same object");
-        } else {
-            System.out.println("e and f are different objects");
-        }
-
-        if (e.equals(f)) {
-            System.out.println("e and f have the same value");
-        } else {
-            System.out.println("e and f have different values");
-        }
+    public void passByReferenceDoubleQuotation(String str) {
+        str = "passByReference";
     }
 }
+```
+```bash
+>> passByReferenceDoubleQuotation str = origin name
+   passByReferenceWithNewOperator str = origin name
 ```
 </details>
 
@@ -220,7 +248,7 @@ public class StringPoolSampleCode {
     <summary>답변</summary>
 
 - 등위 연산자 : 기본자료형을 비교할 땐 값을, 참조자료형을 비교할 땐 주소값을 비교하게 된다. &rarr; 그럼 결국 stack에 저장된 값을 비교한다는거 아닌가?
-- equlas() : hasCode() 메서드를 호출하여 값을 비교한다.
+- equlas() : hashCode() 메서드를 호출하여 값을 비교한다.
 - hasCode() : 객체의 주소 값을 이용해서 해싱(hashing) 기법을 통해 해시 코드를 만든 후 반환. 엄밀히 말하면 해시코드는 메모리상 주소값은 아니고, 주소값으로 만든 고유한 숫자값.
 
 </details>
@@ -314,7 +342,19 @@ class SampleDto {
 <details>
     <summary>답변</summary>
 
-- 내용
+- 객체의 동일 여부를 판단할 때
+객체에 정의된 멤버의 값이 동일할 때 동일하다고 여기고 싶다면
+equals() 메서드를 재정의 하게 될 것이다.
+
+equals를 재정의 할 것이라면, 해당 객체를 key 값으로 사용하는 Collection에서 논리적으로 같은지 비교하기 위해 hashCode()도 같이 재정의 해야 한다
+
+그런데 이때 hashCode를 잘못 재정의하게 되면 HashMap 의 버켓 들에 균등하게 요소들이 들어가지 않아 검색시간이 느려질 수 있음.
+
+HashMap의 버켓은 배열로 되어 있고 각 요소는 링크드리스트로 구성되어 있음.
+만약 같은 버켓에 많은 요소가 저장되면, 검색시간이 느린 링크드리스트 때문에 전체 조회 성능 떨어짐
+
+해쉬값이 오버플로우나서 같아지면 안됨
+- 참고 : 자바의 정석 2권 651 ~ 653
 
 </details>
 
@@ -326,36 +366,44 @@ class SampleDto {
 <details>
     <summary>답변</summary>
 
-- String 클래스는 불변객체 Immutable하다.
-- 따라서 하나의 객체에 변경 작업이 계속되면, 변경(재할당)마다 새로운 객체를 Heap 영역의 String Pool 이라는 공간에 저장한다.        
-    - 저장되는 영역은 한계가 있다.
-    - JDK 1.5 부터 컴파일 과정에서 `+` 연산의 경우 StringBuilder으로 자동변환되어 성능최적화
+- String 클래스는 불변객체, 불변(Immutable)하다.
+- 따라서 하나의 객체에 변경 작업이 계속되면, 변경(재할당)마다 새로운 객체를 Heap 영역의 String Pool 에 저장.
+    1. String을 계속 더하는 작업을 하면 매번 new 연산을 수행해야 한다.
+    2. 매번 기존 객체는 버려지고, 쓰레기가 됨. 저장되는 영역은 한계가 있다.
+    3. 
+    - JDK 1.5 부터 컴파일 과정에서 `+` 연산의 경우 StringBuilder으로 자동변환되어 성능최적화에 도움이 되지만, 반복문 내에서 new 연산자를 사용하기 때문에 명시적으로 반복문 외부에서 StringBuilder를 생성하는 것이 좋다.
 
 </details>
 
-#### 꼬리질문) 불변이란 무엇이고 왜 String을 불변성을 띄게 설계되었을까?
+#### 꼬리질문1) 불변이란 무엇이고 왜 String을 불변성을 띄게 설계되었을까?
 
 <details>
     <summary>답변</summary>
 </br>
 
-1) 보안
+불변성은 스레드 안전성을 제공하며, JVM 성능의 지속적인 개선으로 이전 객체를 변경하는 대신 새 객체를 더 빠르게 생성하는 경우가 많습니다.
+
+1) 병렬 프로그래밍 환경에서 String Pool에 적재된 String 을 안전하게 공유하기 위함.
+  - String은 Java 애플리케이션에서 가장 많이 사용될 데이터 타입이었다. 따라서 String pool에 String 객체를 공유해 임시로 생성된 String 객체를 줄여줌. 
+1) String 객체를 수정할 수 있다면 Java의 전체 보안 모델이 깨질 것이기 때문.
 
 - 참고 링크 : [Oracle Java Magazine, Why is Java making so many things immutable?](https://blogs.oracle.com/javamagazine/post/java-immutable-objects-strings-date-time-records)
+- 참고 링크 : [Why String is Immutable or final in Java - 5 Reasons
+](https://www.mimul.com/blog/why-string-class-has-made-immutable-or-final-java/)
 
 </details>
 
-#### 꼬리질문1) 불변한 String의 단점을 보완하는 방법이 있나요?
+#### 꼬리질문2) 불변한 String의 단점을 보완하는 방법이 있나요?
 
 <details>
     <summary>답변</summary>
 
-불변한 String과 달리 StringBuffer와 StringBuilder는 가변적이다.
+불변한 String의 단점을 보완하기 위해 가변적인 `StringBuffer`와 `StringBuilder` 클래스가 등장
 
-StringBuffer
+**StringBuffer**
 - 멀티쓰레드에 안전(thread safe)하도록 동기화 되어 있다
 
-StringBuilder
+**StringBuilder**
 - StringBuffer에서 쓰레드 동기화만 뺀 StringBuilder가 새로 추가
 
 추가 키워드 : 동기화
@@ -367,13 +415,17 @@ StringBuilder
 
 </details>
 
-#### 꼬리질문) 왜 동기화(synchronized)가 걸려있으면 느린걸까요?
+#### 꼬리질문3) 왜 동기화(synchronized)가 걸려있으면 느린걸까요?
 
+<details>
+    <summary>답변</summary>
 
 싱글 스레드로 접근한다는 가정하에선 "StringBuilder" 와 "StringBuffer" 의 성능이 똑같을까요?
 함정 질문입니다. synchronized 키워드를 달면 내부적으로 어떤 일이 벌어지는지 동작원리에 대해 잘 알아보세요!
 
-#### 꼬리질문) String 변수에 값을 할당할 때, `new` 연산자와 쌍따옴표`""`의 차이점은?
+</details>
+
+#### 꼬리질문4) String 변수에 값을 할당할 때, `new` 연산자와 쌍따옴표`""`의 차이점은?
 
 <details>
     <summary>답변</summary>
@@ -386,7 +438,7 @@ StringBuilder
 
 </details>
 
-#### 꼬리질문2) String은 참조자료형임에도 불구하고, 동일한 값을 갖는 두 객체(변수)에 `==` 연산의 결과가 True 입니다. 그 이유는 무엇일까요?
+#### 꼬리질문5) String은 참조자료형임에도 불구하고, 동일한 값을 갖는 두 객체(변수)에 `==` 연산의 결과가 True 입니다. 그 이유는 무엇일까요?
 
 <details>
     <summary>답변</summary>
@@ -398,7 +450,7 @@ StringBuilder
 
 </details>
 
-#### 꼬리질문) String tokenizer와 split의 차이
+#### 꼬리질문6) String tokenizer와 split의 차이
 
 <details>
     <summary>답변</summary>

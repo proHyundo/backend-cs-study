@@ -56,11 +56,21 @@
     <summary>답변</summary>
 
 - Grabage Collection 을 통해 메모리 관리를 수행한다.
-- 
+
+Java7 &rarr; Java8
+- JVM의 여러 메모리 영역 중에 PermGen 메모리 영역이 없어지고 Metaspace 영역이 생겼다.
+- Metaspace는 클래스 메타데이터를 담는 영역인데, Default으로 제한된 크기를 가지고 있지 않고 동적으로 클래스를 생성할 경우 필요한 만큼 계속 늘어난다. 따라서 불필요한 클래스가 계속 생겨나면 추후 서버가 다운되는 상황이 발생할 수 있으니 모니터링을 통해 적절한 max 값을 찾는 것이 좋다.
+
+![image](https://github.com/proHyundo/backend-cs-study/assets/128882585/acca98b0-942c-4a6e-9bf6-619d5d2893f2)
+
+![image](https://github.com/proHyundo/backend-cs-study/assets/128882585/5410a9ad-1c01-419d-8b1a-cbdea4fb7c78)
+
+참고
+- 더 자바 8 백기선
 
 </details>
 
-#### 꼬리질문) 기업에서는 왜 Java를 사용할까요? 면접자의 의견이 궁금합니다.
+#### 꼬리질문) 기업에서는 왜 Java를 사용할까요?
 
 <details>
     <summary>답변</summary>
